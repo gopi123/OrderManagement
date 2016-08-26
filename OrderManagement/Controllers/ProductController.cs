@@ -35,5 +35,17 @@ namespace OrderManagement.Controllers
             }
             return View(_modelList);
         }
+
+        public ActionResult Create()
+        {
+            try
+            {
+
+            }
+            catch (Exception ex)
+            {
+
+            }
+        }
     }
 }
