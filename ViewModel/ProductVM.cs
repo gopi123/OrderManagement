@@ -17,7 +17,7 @@ namespace ViewModel
 
         [Required(ErrorMessage="Please enter UnitPrice")]
         public decimal UnitPrice { get; set; }
-        public HttpPostedFileBase Image { get; set; }
+        public HttpPostedFileBase ProductImage { get; set; }
 
         [Required(ErrorMessage="Please select atleast one category")]
         public int CategoryId { get; set; }
