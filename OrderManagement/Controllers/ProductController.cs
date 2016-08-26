@@ -12,6 +12,12 @@ namespace OrderManagement.Controllers
     public class ProductController : Controller
     {
         DatabaseContext _db = new DatabaseContext();
+
+        public class clsCategoryList
+        {
+            public int Id { get; set; }
+            public string Name { get; set; }
+        }
         // GET: Product
         public ActionResult Index()
         {
@@ -40,12 +46,60 @@ namespace OrderManagement.Controllers
         {
             try
             {
+                List<clsCategoryList> _categoryList=GetCategoryList();               
+
+                ProductVM _model = new ProductVM();
+                _model.CategoryList = new SelectList(_categoryList, "Id", "Name");
+
+                return View(_model);
+               
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index");
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Create(ProductVM model)
+        {
+            try
+            {
+                Product _dbProduct = new Product();
+                _dbProduct.ProductName = model.ProductName;
+                _dbProduct.UnitPrice = model.UnitPrice;
+                _dbProduct.TransactionDate = DateTime.Now;
+                _dbProduct.CategoryId = model.CategoryId;
+
+                //_db.Products.Add(_dbProduct);
+                //_db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                return View();
+            }
+        }
+
+        public List<clsCategoryList> GetCategoryList()
+        {
+            List<clsCategoryList> _clsCategory = new List<clsCategoryList>();
+            try
+            {
+                _clsCategory = _db.Categoires
+                              .Select(c => new clsCategoryList
+                              {
+                                  Id = c.CategoryId,
+                                  Name = c.CategoryName
+                              }).ToList();
 
             }
             catch (Exception ex)
             {
-
+                _clsCategory = null;
             }
+            return _clsCategory;
         }
     }
 }
